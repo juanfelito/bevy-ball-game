@@ -14,36 +14,38 @@ pub fn spawn_camera(mut commands: Commands, window_query: Query<&Window, With<Pr
 }
 
 pub fn transition_to_game_state(
-    mut commands: Commands,
     keyboard_input: Res<ButtonInput<KeyCode>>,
-    app_state: Res<State<AppState>>
+    app_state: Res<State<AppState>>,
+    mut next_app_state: ResMut<NextState<AppState>>
 ) {
     if keyboard_input.just_pressed(KeyCode::KeyG) {
         if app_state.ne(&AppState::Game) {
-            commands.insert_resource(NextState(Some(AppState::Game)));
+            next_app_state.set(AppState::Game);
             println!("Entered game state")
         }
     }
 }
 
 pub fn transition_to_main_menu_state(
-    mut commands: Commands,
     keyboard_input: Res<ButtonInput<KeyCode>>,
-    app_state: Res<State<AppState>>
+    app_state: Res<State<AppState>>,
+    mut next_app_state: ResMut<NextState<AppState>>
 ) {
     if keyboard_input.just_pressed(KeyCode::KeyM) {
         if app_state.ne(&AppState::MainMenu) {
-            commands.insert_resource(NextState(Some(AppState::MainMenu)));
+            next_app_state.set(AppState::MainMenu);
             println!("Entered main menu state")
         }
     }
 }
 
 pub fn handle_game_over(
-    mut game_over_ereader: EventReader<GameOver>
+    mut game_over_ereader: EventReader<GameOver>,
+    mut next_app_state: ResMut<NextState<AppState>>
 ) {
     for event in game_over_ereader.read().into_iter() {
         println!("Your final score is: {}!", event.score);
+        next_app_state.set(AppState::GameOver);
     }
 }
 

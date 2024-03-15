@@ -2,7 +2,7 @@ use bevy::prelude::*;
 
 pub mod resources;
 pub mod components;
-mod systems;
+pub mod systems;
 
 use systems::*;
 use resources::EnemySpawnTimer;
@@ -23,15 +23,17 @@ impl Plugin for EnemyPlugin {
     fn build(&self, app: &mut App) {
         app
             .init_resource::<EnemySpawnTimer>()
-            .add_systems(OnEnter(AppState::Game), spawn_enemies)
-            .add_systems(Update, (
-                enemy_movement.before(confine),
-                update_enemy_direction,
-                enemy_hit_player,
-                spawn_enemies_over_time
+            .add_systems(OnEnter(AppState::Game), spawn_enemies) // after spawn player
+            .add_systems(Update, 
+                (
+                    enemy_movement.before(confine),
+                    update_enemy_direction,
+                    enemy_hit_player,
+                    spawn_enemies_over_time
+                )
+                    .run_if(in_state(AppState::Game))
+                    .run_if(in_state(SimulationState::Running))
             )
-                .run_if(in_state(AppState::Game))
-                .run_if(in_state(SimulationState::Running))
-            );
+            .add_systems(OnExit(AppState::Game), despawn_enemies);
     }
 }

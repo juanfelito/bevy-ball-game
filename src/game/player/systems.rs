@@ -90,3 +90,12 @@ pub fn player_hit_star(
         }
     }
 }
+
+pub fn despawn_player(
+    mut commands: Commands,
+    player_query: Query<Entity, With<Player>>
+) {
+    for player_entity in player_query.iter() {
+        commands.entity(player_entity).despawn();
+    }
+}

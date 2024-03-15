@@ -29,13 +29,15 @@ impl Plugin for GamePlugin {
                 ScorePlugin,
                 StarPlugin
             ))
-            .add_systems(Update, toggle_simulation.run_if(in_state(AppState::Game)));
+            .add_systems(OnEnter(AppState::Game), pause)
+            .add_systems(Update, toggle_simulation.run_if(in_state(AppState::Game)))
+            .add_systems(OnExit(AppState::Game), resume);
     }
 }
 
 #[derive(States, Debug, Clone, Eq, PartialEq, Hash, Default)]
 pub enum SimulationState {
-    Running,
     #[default]
+    Running,
     Paused
 }
