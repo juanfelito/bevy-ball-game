@@ -9,7 +9,7 @@ use resources::EnemySpawnTimer;
 
 use crate::AppState;
 
-use super::{confine::systems::confine, SimulationState};
+use super::{confine::systems::confine, player::spawn_player, SimulationState};
 
 pub const SPAWN_GAP: f32 = 200.0;
 pub const NUMBER_OF_ENEMIES: u32 = 4;
@@ -23,7 +23,7 @@ impl Plugin for EnemyPlugin {
     fn build(&self, app: &mut App) {
         app
             .init_resource::<EnemySpawnTimer>()
-            .add_systems(OnEnter(AppState::Game), spawn_enemies) // after spawn player
+            .add_systems(OnEnter(AppState::Game), spawn_enemies.after(spawn_player))
             .add_systems(Update, 
                 (
                     enemy_movement.before(confine),

@@ -5,6 +5,7 @@ pub mod player;
 pub mod star;
 pub mod score;
 pub mod confine;
+pub mod ui;
 mod systems;
 
 use confine::ConfinePlugin;
@@ -12,6 +13,7 @@ use enemy::EnemyPlugin;
 use player::PlayerPlugin;
 use score::ScorePlugin;
 use star::StarPlugin;
+use ui::GameUIPlugin;
 use systems::*;
 
 use crate::AppState;
@@ -27,7 +29,8 @@ impl Plugin for GamePlugin {
                 EnemyPlugin,
                 PlayerPlugin,
                 ScorePlugin,
-                StarPlugin
+                StarPlugin,
+                GameUIPlugin,
             ))
             .add_systems(OnEnter(AppState::Game), pause)
             .add_systems(Update, toggle_simulation.run_if(in_state(AppState::Game)))
