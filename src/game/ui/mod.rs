@@ -1,10 +1,10 @@
-//mod game_over_menu;
+mod game_over_menu;
 mod hud;
-//mod pause_menu;
+mod pause_menu;
 
-//use game_over_menu::GameOverMenuPlugin;
+use game_over_menu::GameOverMenuPlugin;
 use hud::HudPlugin;
-//use pause_menu::PauseMenuPlugin;
+use pause_menu::PauseMenuPlugin;
 
 use bevy::prelude::*;
 
@@ -15,8 +15,8 @@ impl Plugin for GameUIPlugin {
         app
             .add_plugins((
                 HudPlugin,
-                //PauseMenuPlugin,
-                //GameOverMenuPlugin
+                PauseMenuPlugin,
+                GameOverMenuPlugin
             ));
     }
 }
